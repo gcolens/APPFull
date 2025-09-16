@@ -6,7 +6,7 @@ services:
     container_name: postgres_container
     #restart: unless-stopped
     ports:
-      - "2323:5432" #Mapea el puerto 2323 del host al 5432 interno de Postgress
+      - "5000:5432" #Mapea el puerto 2323 del host al 5432 interno de Postgress
     environment:
       POSTGRES_USER: amigo
       POSTGRES_PASSWORD: "elamigo23"
@@ -15,14 +15,14 @@ services:
       - pg_data:/var/lib/postgresql/data # Volumen para la persistencia
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql #  Script de inicializacion
     networks:
-      - red_postgres
+    #  - red_postgres
 
 volumes:
   pg_data:
     driver: local
 
-networks:
-  red_postgres:
-    name: red_postgres # Nombre real de la red que se creará
-    driver: bridge # Utiliza el driver bridge (Por defecto)
+#networks:
+  #red_postgres:
+   # name: red_postgres # Nombre real de la red que se creará
+   # driver: bridge # Utiliza el driver bridge (Por defecto)
 

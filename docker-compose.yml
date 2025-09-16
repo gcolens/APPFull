@@ -6,7 +6,7 @@ services:
     container_name: postgres_container
     restart: unless-stopped
     ports:
-      - "2323:5432"
+      - "5000:5432"
     environment:
       POSTGRES_USER: amigo
       POSTGRES_PASSWORD: "elamigo23"
