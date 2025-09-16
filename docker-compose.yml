@@ -1,0 +1,60 @@
+#version: '3.8'
+
+services:
+  postgres:
+    image: postgres:16
+    container_name: postgres_container
+    restart: unless-stopped
+    ports:
+      - "2323:5432"
+    environment:
+      POSTGRES_USER: amigo
+      POSTGRES_PASSWORD: "elamigo23"
+      POSTGRES_DB: empresa_amiga
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+      - ./Database_docker/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - red_postgres
+
+  backend:
+    build: ./Backend_sql.
+    container_name: fastapi_service
+    ports:
+      - "2346:8000"
+    env_file:
+      - .env
+    networks:
+      - red_postgres
+    depends_on:
+      - postgres
+
+  frontend:
+    build: ./FrontEnd.
+    container_name: flet_frontend
+    ports:
+      - "8501:8501"
+    env_file:
+      - .env
+    networks:
+      - red_postgres
+
+  # populate_data:
+  #   build: ./Populate_data
+  #   container_name: populate_data_service
+  #   env_file:
+  #     - ./Populate_data/.env
+  #   networks:
+  #     - red_postgres
+  #   depends_on:
+  #     - postgres
+
+networks:
+  red_postgres:
+    name: red_postgres
+    driver: bridge
+
+volumes:
+  pg_data:
+    driver: local
+
